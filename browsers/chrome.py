@@ -16,7 +16,20 @@ class ChromeBrowser:
         self.options.add_argument('--disable-dev-shm-usage')
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=self.options)
 
+    # get html code
     def get_html(self,url):
         self.driver.get(url)
+        # wait 10 seconds for the page to load, if it loads before 10 seconds it will continue
+        self.driver.implicitly_wait(10)
         html = self.driver.page_source
+
         return html
+
+    # restart browser
+    def restart(self):
+        self.driver.quit()
+        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=self.options)
+    
+    # close browser
+    def close(self):
+        self.driver.quit()
