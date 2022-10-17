@@ -20,7 +20,10 @@ from webdriver_manager.firefox import GeckoDriverManager
 
 
 class Crawler:
-    def __init__(self, browser="chrome", always_use_browser=False, headless=True):
+    def __init__(self,
+                browser="chrome",
+                always_use_browser=False,
+                headless=True):
         '''
         :param url (string): url to get the HTML code from
         :param browser (string): standard is "brave", it is the browser to use to get the HTML code, can be: "chrome", "firefox" or "brave"
@@ -54,7 +57,7 @@ class Crawler:
             capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
             if headless:
                 options.add_argument("--headless")
-            self.browser = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options, desired_capabilities=capabilities)
+            self.browser = webdriver.Firefox(GeckoDriverManager().install(), options=options, desired_capabilities=capabilities)
         elif browser == "brave":
             options = ChromeOptions()
             options.add_argument("--disable-extensions")
@@ -70,6 +73,8 @@ class Crawler:
             if headless:
                 options.add_argument("--headless")
             self.browser = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install(), options=options, desired_capabilities=capabilities)
+        else:
+            raise Exception("Browser not supported")
 
     def __enter__(self):
         return self
